@@ -42,7 +42,8 @@ class SpriteClassifier(nn.Module):
                 nn.Linear(size * size * channels, code_dim),
                 nn.BatchNorm1d(code_dim), nl)
         # The last hidden state of a convolutional LSTM over the scenes is used for classification
-        self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False)
+        #self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False)
+        hidden_dim = code_dim
         self.body = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl,
@@ -69,10 +70,10 @@ class SpriteClassifier(nn.Module):
         x = self.encoding_conv(x)
         x = x.view(-1, self.final_channels * (self.final_size ** 2))
         x = self.encoding_fc(x)
-        x = x.view(-1, self.num_frames, self.code_dim)
+        #x = x.view(-1, self.num_frames, self.code_dim)
         # Classifier output depends on last layer of LSTM: Can also change this to a bi-LSTM if required
-        _, (hidden, _) = self.classifier_lstm(x)
-        hidden = hidden.view(-1, self.hidden_dim)
+        #_, (hidden, _) = self.classifier_lstm(x)
+        hidden = x
         return self.body(hidden), self.shirt(hidden), self.pants(hidden), self.hairstyles(hidden), self.action(hidden)
 
 
