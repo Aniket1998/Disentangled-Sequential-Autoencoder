@@ -20,7 +20,7 @@ class Sprites(data.Dataset):
 
 class SpriteClassifier(nn.Module):
     def __init__(self, n_bodies=7, n_shirts=4, n_pants=5, n_hairstyles=6, n_actions=3,
-                 num_frames=8, in_size=64, channels=64, code_dim=1024, hidden_dim=512, nonlinearity=None):
+                 num_frames=8, in_size=64, channels=64, code_dim=1024, hidden_dim=512, nonlinearity=None, p=0.3):
         super(SpriteClassifier, self).__init__()
         nl = nn.LeakyReLU(0.2) if nonlinearity is None else nonlinearity
         encoding_conv = []
@@ -29,6 +29,7 @@ class SpriteClassifier(nn.Module):
         self.num_frames = num_frames
         while size > 4:
             encoding_conv.append(nn.Sequential(
+                nn.Dropout(p)
                 nn.Conv2d(channels, channels * 2, 5, 4, 1, bias=False),
                 nn.BatchNorm2d(channels * 2), nl))
             size = size // 4
@@ -42,27 +43,31 @@ class SpriteClassifier(nn.Module):
                 nn.Linear(size * size * channels, code_dim),
                 nn.BatchNorm1d(code_dim), nl)
         # The last hidden state of a convolutional LSTM over the scenes is used for classification
-        #self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False)
-        hidden_dim = code_dim
+        self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False, dropout=p)
         self.body = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
-                nn.BatchNorm1d(hidden_dim // 2), nl,
+                nn.BatchNorm1d(hidden_dim // 2), nl, 
+                nn.Dropout(p),
                 nn.Linear(hidden_dim // 2, n_bodies))
         self.shirt = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl,
+                nn.Dropout(p)
                 nn.Linear(hidden_dim // 2, n_shirts))
         self.pants = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl,
+                nn.Dropout(p),
                 nn.Linear(hidden_dim // 2, n_pants))
         self.hairstyles = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl,
+                nn.Dropout(p),
                 nn.Linear(hidden_dim // 2, n_hairstyles))
         self.action = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl,
+                nn.Dropout(p),
                 nn.Linear(hidden_dim // 2, n_actions))
 
     def forward(self, x):
@@ -70,10 +75,10 @@ class SpriteClassifier(nn.Module):
         x = self.encoding_conv(x)
         x = x.view(-1, self.final_channels * (self.final_size ** 2))
         x = self.encoding_fc(x)
-        #x = x.view(-1, self.num_frames, self.code_dim)
+        x = x.view(-1, self.num_frames, self.code_dim)
         # Classifier output depends on last layer of LSTM: Can also change this to a bi-LSTM if required
-        #_, (hidden, _) = self.classifier_lstm(x)
-        hidden = x
+        _, (hidden, _) = self.classifier_lstm(x)
+        hidden = hidden.view(-1, self.hidden_dim)
         return self.body(hidden), self.shirt(hidden), self.pants(hidden), self.hairstyles(hidden), self.action(hidden)
 
 
@@ -142,6 +147,6 @@ model.to(device)
 optim = torch.optim.Adam(model.parameters(), lr=0.0003)
 sprites_train = Sprites('./dataset/lpc-dataset/train', 6759)
 sprites_test = Sprites('./dataset/lpc-dataset/test', 801)
-loader = data.DataLoader(sprites_train, batch_size=32, shuffle=True, num_workers=4)
-loader_test = data.DataLoader(sprites_test, batch_size=64, shuffle=True, num_workers=4)
+loader = data.DataLoader(sprites_train, batch_size=256, shuffle=True, num_workers=4)
+loader_test = data.DataLoader(sprites_test, batch_size=256, shuffle=True, num_workers=4)
 train_classifier(model, optim, loader, device, 20, './checkpoint_classifier.pth', loader_test) 
