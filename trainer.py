@@ -96,7 +96,7 @@ class Trainer(object):
             _,_,_,_,_,_,recon = self.model(original) 
             image = torch.cat((original,recon),dim=0)
             print(image.shape)
-            image = image.view(self.samples*8,3,64,64)
+            image = image.view(2*8,3,64,64)
             os.makedirs(os.path.dirname('%s/epoch%d.png' % (self.recon_path,epoch)),exist_ok=True)
             torchvision.utils.save_image(image,'%s/epoch%d.png' % (self.recon_path,epoch))
 
@@ -117,8 +117,8 @@ class Trainer(object):
             image2_body_image1_motion = self.model.decode_frames(image2swap_zf)
             image2_body_image1_motion = torch.squeeze(image2_body_image1_motion,0)
             os.makedirs(os.path.dirname('%s/epoch%d/image1_body_image2_motion.png' % (self.transfer_path,epoch)),exist_ok=True)
-            torchvision.utils.save_image(image1_body_image2_motion,'%s/epoch%d/image1_body_image2_motion.png' % (transfer_path,epoch))
-            torchvision.utils.save_image(image2_body_image1_motion,'%s/epoch%d/image2_body_image1_motion.png' % (transfer_path,epoch))
+            torchvision.utils.save_image(image1_body_image2_motion,'%s/epoch%d/image1_body_image2_motion.png' % (self.transfer_path,epoch))
+            torchvision.utils.save_image(image2_body_image1_motion,'%s/epoch%d/image2_body_image1_motion.png' % (self.transfer_path,epoch))
 
 
 
@@ -153,7 +153,7 @@ class Trainer(object):
 
 sprite = Sprites('./dataset/lpc-dataset/train', 6759)
 sprite_test = Sprites('./dataset/lpc-dataset/test', 801)
-loader = torch.utils.data.DataLoader(sprite, batch_size=257, shuffle=True, num_workers=4)
+loader = torch.utils.data.DataLoader(sprite, batch_size=256, shuffle=True, num_workers=4)
 vae = DisentangledVAE()
 trainer = Trainer(vae, sprite, sprite_test, loader ,None, batch_size=256, device=torch.device('cuda:1'))
 trainer.train_model()
