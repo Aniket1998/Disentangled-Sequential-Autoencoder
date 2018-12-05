@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 from model import *
+from tqdm import *
 
 __all__ = ['Sprites', 'loss_fn', 'Trainer']
 class Sprites(torch.utils.data.Dataset):
@@ -87,7 +88,7 @@ class Trainer(object):
     def sample_frames(self,epoch):
         with torch.no_grad():
            recon_x = self.model.decode_frames(self.test_zf) 
-           recon_x = recon_x.view(self.samples,3,64,64)
+           recon_x = recon_x.view(self.samples*8,3,64,64)
            torchvision.utils.save_image(recon_x,'%s/epoch%d.png' % (self.sample_path,epoch))
     
     def recon_frame(self,epoch,original):
@@ -95,7 +96,7 @@ class Trainer(object):
             _,_,_,_,_,_,recon = self.model(original) 
             image = torch.cat((original,recon),dim=0)
             print(image.shape)
-            image = image.view(self.samples,3,64,64)
+            image = image.view(self.samples*8,3,64,64)
             os.makedirs(os.path.dirname('%s/epoch%d.png' % (self.recon_path,epoch)),exist_ok=True)
             torchvision.utils.save_image(image,'%s/epoch%d.png' % (self.recon_path,epoch))
 
@@ -126,7 +127,7 @@ class Trainer(object):
        for epoch in range(self.start_epoch,self.epochs):
            losses = []
            print("Running Epoch : {}".format(epoch+1))
-           for i,dataitem in enumerate(self.trainloader,1):
+           for i,dataitem in tqdm(enumerate(self.trainloader,1)):
                _,_,_,_,_,data = dataitem
                data = data.to(self.device)
                self.optimizer.zero_grad()
@@ -151,7 +152,7 @@ class Trainer(object):
        print("Training is complete")
 
 sprite = Sprites('./dataset/lpc-dataset/train', 6759)
-loader = torch.utils.data.DataLoader(sprite, batch_size=8, shuffle=True, num_workers=4)
+loader = torch.utils.data.DataLoader(sprite, batch_size=257, shuffle=True, num_workers=4)
 vae = DisentangledVAE()
-trainer = Trainer(vae, sprite, None, loader ,None, batch_size=8)
+trainer = Trainer(vae, sprite, None, loader ,None, batch_size=256, device=torch.device('cuda:1'))
 trainer.train_model()
