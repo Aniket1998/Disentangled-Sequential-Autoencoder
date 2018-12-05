@@ -127,8 +127,7 @@ class Trainer(object):
            losses = []
            print("Running Epoch : {}".format(epoch+1))
            for i,dataitem in enumerate(self.trainloader,1):
-               a1,a2,a3,a4,a5,data = dataitem
-               print(a1,a2,a3,a4,a5)
+               _,_,_,_,_,data = dataitem
                data = data.to(self.device)
                self.optimizer.zero_grad()
                f_mean,f_logvar,f,z_mean,z_logvar,z,recon_x = self.model(data)
@@ -150,7 +149,7 @@ class Trainer(object):
            self.model.train()
        print("Training is complete")
 
-sprite = Sprites('./dataset/lpc-dataset/train', 6732)
+sprite = Sprites('./dataset/lpc-dataset/train', 6759)
 loader = torch.utils.data.DataLoader(sprite, batch_size=8, shuffle=True, num_workers=4)
 vae = DisentangledVAE()
 trainer = Trainer(vae, sprite, None, loader ,None, batch_size=8)
