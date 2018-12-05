@@ -152,7 +152,8 @@ class Trainer(object):
        print("Training is complete")
 
 sprite = Sprites('./dataset/lpc-dataset/train', 6759)
+sprite_test = Sprites('./dataset/lpc-dataset/test', 801)
 loader = torch.utils.data.DataLoader(sprite, batch_size=257, shuffle=True, num_workers=4)
 vae = DisentangledVAE()
-trainer = Trainer(vae, sprite, None, loader ,None, batch_size=256, device=torch.device('cuda:1'))
+trainer = Trainer(vae, sprite, sprite_test, loader ,None, batch_size=256, device=torch.device('cuda:1'))
 trainer.train_model()
