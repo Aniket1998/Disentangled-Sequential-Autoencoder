@@ -116,9 +116,11 @@ class Trainer(object):
             image2swap_zf = torch.cat((image1_z,image2_f_expand),dim=2)
             image2_body_image1_motion = self.model.decode_frames(image2swap_zf)
             image2_body_image1_motion = torch.squeeze(image2_body_image1_motion,0)
+            image1 = torch.squeeze(self.image1, 0)
+            image2 = torch.squeeze(self.image2, 0)
             os.makedirs(os.path.dirname('%s/epoch%d/image1_body_image2_motion.png' % (self.transfer_path,epoch)),exist_ok=True)
-            torchvision.utils.save_image(self.image1,'%s/epoch%d/image1.png' % (self.transfer_path,epoch))
-            torchvision.utils.save_image(self.image2,'%s/epoch%d/image2.png' % (self.transfer_path,epoch))
+            torchvision.utils.save_image(image1,'%s/epoch%d/image1.png' % (self.transfer_path,epoch))
+            torchvision.utils.save_image(image2,'%s/epoch%d/image2.png' % (self.transfer_path,epoch))
             torchvision.utils.save_image(image1_body_image2_motion,'%s/epoch%d/image1_body_image2_motion.png' % (self.transfer_path,epoch))
             torchvision.utils.save_image(image2_body_image1_motion,'%s/epoch%d/image2_body_image1_motion.png' % (self.transfer_path,epoch))
 
