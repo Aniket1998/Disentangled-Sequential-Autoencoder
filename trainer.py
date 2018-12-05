@@ -142,7 +142,7 @@ class Trainer(object):
            self.save_checkpoint(epoch)
            self.model.eval()
            self.sample_frames(epoch+1)
-           sample = self.test[int(torch.randint(0,len(self.test),(1,)).item())]
+           _,_,_,_,_,sample = self.test[int(torch.randint(0,len(self.test),(1,)).item())]
            sample = torch.unsqueeze(sample,0)
            sample = sample.to(self.device)
            self.sample_frames(epoch+1)
