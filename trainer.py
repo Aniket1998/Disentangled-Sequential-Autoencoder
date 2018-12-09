@@ -7,26 +7,17 @@ import torch.optim as optim
 import numpy as np
 from model import *
 from tqdm import *
+from .dataset import *
 
-__all__ = ['Sprites', 'loss_fn', 'Trainer']
-class Sprites(torch.utils.data.Dataset):
-    def __init__(self,path,size):
-        self.path = path
-        self.length = size;
+__all__ = ['loss_fn', 'Trainer']
 
-    def __len__(self):
-        return self.length
-        
-    def __getitem__(self,idx):
-        item = torch.load(self.path+'/%d.sprite' % (idx+1))
-        return item['body'], item['shirt'], item['pant'], item['hair'], item['action'], item['sprite']
 
 
 def loss_fn(original_seq,recon_seq,f_mean,f_logvar,z_mean,z_logvar):
     mse = F.mse_loss(recon_seq,original_seq,reduction='sum');
     kld_f = -0.5 * torch.sum(1 + f_logvar - torch.pow(f_mean,2) - torch.exp(f_logvar))
     kld_z = -0.5 * torch.sum(1 + z_logvar - torch.pow(z_mean,2) - torch.exp(z_logvar))
-    return mse + kld_f + kld_z
+    return (mse + kld_f + kld_z)/recon_seq.size(0)
   
 
 class Trainer(object):
@@ -132,7 +123,7 @@ class Trainer(object):
            losses = []
            print("Running Epoch : {}".format(epoch+1))
            for i,dataitem in tqdm(enumerate(self.trainloader,1)):
-               _,_,_,_,_,data = dataitem
+               _,_,_,_,_,_,data = dataitem
                data = data.to(self.device)
                self.optimizer.zero_grad()
                f_mean,f_logvar,f,z_mean,z_logvar,z,recon_x = self.model(data)
@@ -146,7 +137,7 @@ class Trainer(object):
            self.save_checkpoint(epoch)
            self.model.eval()
            self.sample_frames(epoch+1)
-           _,_,_,_,_,sample = self.test[int(torch.randint(0,len(self.test),(1,)).item())]
+           _,_,_,_,_,_,sample = self.test[int(torch.randint(0,len(self.test),(1,)).item())]
            sample = torch.unsqueeze(sample,0)
            sample = sample.to(self.device)
            self.sample_frames(epoch+1)
