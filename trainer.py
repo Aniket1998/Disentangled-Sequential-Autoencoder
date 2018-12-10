@@ -7,7 +7,7 @@ import torch.optim as optim
 import numpy as np
 from model import *
 from tqdm import *
-from .dataset import *
+from dataset import *
 
 __all__ = ['loss_fn', 'Trainer']
 
@@ -150,5 +150,5 @@ sprite = Sprites('./dataset/lpc-dataset/train', 6767)
 sprite_test = Sprites('./dataset/lpc-dataset/test', 791)
 loader = torch.utils.data.DataLoader(sprite, batch_size=256, shuffle=True, num_workers=4)
 vae = DisentangledVAE(f_dim=256, z_dim=32, factorised=True)
-trainer = Trainer(vae, sprite, sprite_test, loader ,None, batch_size=256, epochs=200, lr=0.0002, device=torch.device('cuda:2'))
+trainer = Trainer(vae, sprite, sprite_test, loader ,None, batch_size=256, epochs=200, learning_rate=0.0002, device=torch.device('cuda:0'))
 trainer.train_model()
