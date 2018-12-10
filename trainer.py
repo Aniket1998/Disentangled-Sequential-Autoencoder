@@ -86,7 +86,6 @@ class Trainer(object):
         with torch.no_grad():
             _,_,_,_,_,_,recon = self.model(original) 
             image = torch.cat((original,recon),dim=0)
-            print(image.shape)
             image = image.view(2*8,3,64,64)
             os.makedirs(os.path.dirname('%s/epoch%d.png' % (self.recon_path,epoch)),exist_ok=True)
             torchvision.utils.save_image(image,'%s/epoch%d.png' % (self.recon_path,epoch))

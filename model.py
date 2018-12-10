@@ -99,7 +99,6 @@ class DisentangledVAE(nn.Module):
             return mean
 
     def encode_f(self, x):
-        print('WTF is going on : {}'.format(x.shape))
         lstm_out, _ = self.f_lstm(x)
         mean = self.f_mean(lstm_out[:, self.frames-1])
         logvar = self.f_logvar(lstm_out[:, self.frames-1])
