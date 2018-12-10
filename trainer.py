@@ -22,7 +22,7 @@ def loss_fn(original_seq,recon_seq,f_mean,f_logvar,z_mean,z_logvar):
 
 class Trainer(object):
     def __init__(self,model,train,test,trainloader,testloader,
-                 epochs=50,batch_size=64,learning_rate=0.001,nsamples=8,sample_path='./sample',
+                 epochs=100,batch_size=64,learning_rate=0.001,nsamples=1,sample_path='./sample',
                  recon_path='./recon/', transfer_path = './transfer/', 
                  checkpoints='model.pth', style1='image1.sprite', style2='image2.sprite', device=torch.device('cuda:0')):
         self.trainloader = trainloader
@@ -146,9 +146,9 @@ class Trainer(object):
            self.model.train()
        print("Training is complete")
 
-sprite = Sprites('./dataset/lpc-dataset/train', 6759)
-sprite_test = Sprites('./dataset/lpc-dataset/test', 801)
+sprite = Sprites('./dataset/lpc-dataset/train', 6767)
+sprite_test = Sprites('./dataset/lpc-dataset/test', 791)
 loader = torch.utils.data.DataLoader(sprite, batch_size=256, shuffle=True, num_workers=4)
-vae = DisentangledVAE(f_dim=64, z_dim=32)
-trainer = Trainer(vae, sprite, sprite_test, loader ,None, batch_size=256, device=torch.device('cuda:1'))
+vae = DisentangledVAE(f_dim=256, z_dim=32, factorised=True)
+trainer = Trainer(vae, sprite, sprite_test, loader ,None, batch_size=256, epochs=200, lr=0.0002, device=torch.device('cuda:2'))
 trainer.train_model()

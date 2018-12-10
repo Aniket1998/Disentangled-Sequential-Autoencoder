@@ -1,0 +1,173 @@
+1543869641573	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.VO52Rtp7PedV"
+1543869647866	Marionette	INFO	Listening on port 43203
+1543869647910	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1543869714876	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.nOmkfDmVSfEB"
+1543869717190	Marionette	INFO	Listening on port 44573
+1543869717283	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+1543869773706	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.YmanebZYS9c5"
+1543869775904	Marionette	INFO	Listening on port 46079
+1543869775913	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1543869811912	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.UwIVDl8UaZud"
+1543869814085	Marionette	INFO	Listening on port 37345
+1543869814119	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1543869835561	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.b7dxkLJPmIQE"
+1543869837702	Marionette	INFO	Listening on port 44455
+1543869837767	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1543869910152	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.GvhKIl0lEiBX"
+1543869912416	Marionette	INFO	Listening on port 42221
+1543869912463	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1543869947609	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.emnFKYRsIogU"
+1543869950099	Marionette	INFO	Listening on port 33769
+1543869950117	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+1543870416776	Marionette	INFO	Stopped listening on port 42221
+1543870418841	Marionette	INFO	Stopped listening on port 44455
+[Parent 29947, Gecko_IOThread] WARNING: pipe error (63): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 29947, Gecko_IOThread] WARNING: pipe error (77): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1543870420525	Marionette	INFO	Stopped listening on port 37345
+[Parent 29576, Gecko_IOThread] WARNING: pipe error (91): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1543870421572	Marionette	INFO	Stopped listening on port 46079
+[Parent 29220, Gecko_IOThread] WARNING: pipe error (64): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1543870422546	Marionette	INFO	Stopped listening on port 44573
+[Parent 28833, Gecko_IOThread] WARNING: pipe error (88): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1543870425232	Marionette	INFO	Stopped listening on port 43203
+1543870460834	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.BbRq9YuSqozt"
+1543870464403	Marionette	INFO	Listening on port 41191
+1543870464444	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+1543873787660	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.kTVCahXDGxjp"
+1543873789976	Marionette	INFO	Listening on port 45085
+1543873790067	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+1543875279311	Marionette	INFO	Stopped listening on port 45085
+1543875280208	Marionette	INFO	Stopped listening on port 41191
+1543957088893	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.08JhzuUmlvDV"
+1543957100770	Marionette	INFO	Listening on port 32833
+1543957100823	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1543957282204	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.63wJplAkTgnX"
+1543957284386	Marionette	INFO	Listening on port 45601
+1543957284414	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+[Parent 12032, Gecko_IOThread] WARNING: pipe error (77): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 12032, Gecko_IOThread] WARNING: pipe error (85): Connection reset by peer: file /build/firefox-JcIUVH/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1543960638749	Marionette	INFO	Stopped listening on port 45601
+1544206799539	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.Gs41s5mtgcaA"
+1544206807554	Marionette	INFO	Listening on port 38761
+1544206807590	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+Gdk-Message: 03:12:20.210: /usr/lib/firefox/firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :1.
+
+Gdk-Message: 03:12:20.217: /usr/lib/firefox/firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :1.
+
+Gdk-Message: 03:12:20.217: /usr/lib/firefox/firefox: Fatal IO error 11 (Resource temporarily unavailable) on X server :1.
+
+Gdk-Message: 03:12:20.703: firefox: Fatal IO error 104 (Connection reset by peer) on X server :1.
+
+1544305690153	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.KtQTbUSZUERw"
+1544306005506	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.RCyUK7rrY4Pb"
+1544306009259	Marionette	INFO	Listening on port 34161
+1544306009345	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js, line 1: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+

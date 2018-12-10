@@ -3,19 +3,8 @@ import torch
 import torch.nn as nn
 import torch.utils.data as data
 import torch.optim
+from .dataset import *
 
-
-class Sprites(data.Dataset):
-    def __init__(self, path, size):
-        self.path = path
-        self.length = size
-
-    def __len__(self):
-        return self.length
-
-    def __getitem__(self, idx):
-        item = torch.load(self.path+'/%d.sprite' % (idx+1))
-        return item['body'], item['shirt'], item['pant'], item['hair'], item['action'], item['sprite']
 
 
 class SpriteClassifier(nn.Module):

@@ -69,13 +69,6 @@ for id_body, body in enumerate(bodies):
                 slices = prepare_tensor(str(name) + ".png")
                 p = torch.rand(1).item() <= 0.1 #Randomly add 10% of the characters created in the test set
                 for id_action, sprites in enumerate(slices):
-                    if p is True:
-                        test += 1
-                        path = './lpc-dataset/test/%d.sprite' % test
-                    else:
-                        train += 1
-                        path = './lpc-dataset/train/%d.sprite' % train
-
                     final_sprite = {
                             'body': id_body,
                             'shirt': id_shirt,
@@ -84,6 +77,15 @@ for id_body, body in enumerate(bodies):
                             'action': id_action // 3,
                             'sprite': sprites
                     }
+                    if p is True:
+                        final_sprite['id'] = test
+                        path = './lpc-dataset/test/%d.sprite' % test
+                        test += 1
+                    else:
+                        final_sprite['id'] = train 
+                        path = './lpc-dataset/train/%d.sprite' % train
+                        train += 1
+
                     print(id_body,id_shirt,id_pant,id_hair,id_action // 3)
                     torch.save(final_sprite, path)
  
