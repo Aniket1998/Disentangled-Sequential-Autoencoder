@@ -57,14 +57,14 @@ class DisentangledVAE(nn.Module):
         decoding_conv = []
         channels = step
         size = 4
-        while size < in_size // 4:
+        while size < in_size:
             decoding_conv.append(nn.Sequential(
                 nn.ConvTranspose2d(channels, channels, 5, 4, 1, 1),
-                nn.BatchNorm2d(channels * 2), nl))
-            channels *= 2
+                nn.BatchNorm2d(channels), nl))
+            #channels *= 2
             size *= 4
         decoding_conv.append(nn.Sequential(
-            nn.ConvTranspose2d(channels, 3, 5, 4, 1, 1), nn.Tanh()))
+            nn.ConvTranspose2d(channels, 3, 5, 1, 2, 0), nn.Tanh()))
         self.deconv = nn.Sequential(*decoding_conv)
         for m in self.modules():
             if isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.BatchNorm1d):
