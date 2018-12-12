@@ -3,13 +3,13 @@ import torch
 import torch.nn as nn
 import torch.utils.data as data
 import torch.optim
-from .dataset import *
+from dataset import *
 
 
 
 class SpriteClassifier(nn.Module):
     def __init__(self, n_bodies=7, n_shirts=4, n_pants=5, n_hairstyles=6, n_actions=3,
-                 num_frames=8, in_size=64, channels=64, code_dim=1024, hidden_dim=512, nonlinearity=None, p=0.3):
+                 num_frames=8, in_size=64, channels=64, code_dim=256, hidden_dim=64, nonlinearity=None, p=0.5):
         super(SpriteClassifier, self).__init__()
         nl = nn.LeakyReLU(0.2) if nonlinearity is None else nonlinearity
         encoding_conv = []
@@ -18,7 +18,7 @@ class SpriteClassifier(nn.Module):
         self.num_frames = num_frames
         while size > 4:
             encoding_conv.append(nn.Sequential(
-                nn.Dropout(p)
+                nn.Dropout(p),
                 nn.Conv2d(channels, channels * 2, 5, 4, 1, bias=False),
                 nn.BatchNorm2d(channels * 2), nl))
             size = size // 4
@@ -32,7 +32,7 @@ class SpriteClassifier(nn.Module):
                 nn.Linear(size * size * channels, code_dim),
                 nn.BatchNorm1d(code_dim), nl)
         # The last hidden state of a convolutional LSTM over the scenes is used for classification
-        self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False, dropout=p)
+        self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False)
         self.body = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl, 
@@ -41,7 +41,7 @@ class SpriteClassifier(nn.Module):
         self.shirt = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl,
-                nn.Dropout(p)
+                nn.Dropout(p),
                 nn.Linear(hidden_dim // 2, n_shirts))
         self.pants = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
@@ -86,7 +86,7 @@ def check_accuracy(model, test, device):
     correct_action = 0
     with torch.no_grad():
         for item in test:
-            body, shirt, pant, hair, action, image = item
+            _, body, shirt, pant, hair, action, image = item
             image = image.to(device)
             body = body.to(device)
             shirt = shirt.to(device)
@@ -114,7 +114,8 @@ def train_classifier(model, optim, dataset, device, epochs, path, test, start=0)
     for epoch in range(start, epochs):
         running_loss = 0.0
         for i, item in tqdm(enumerate(dataset, 1)):
-            body, shirt, pant, hair, action, image = item
+            _, body, shirt, pant, hair, action, image = item
+            print(item.shape)
             image = image.to(device)
             body = body.to(device)
             shirt = shirt.to(device)
@@ -130,12 +131,12 @@ def train_classifier(model, optim, dataset, device, epochs, path, test, start=0)
         save_model(model, optim, epoch, path)
         check_accuracy(model, test, device)
 
-device = torch.device('cuda:0')
-model = SpriteClassifier()
-model.to(device)
-optim = torch.optim.Adam(model.parameters(), lr=0.0003)
-sprites_train = Sprites('./dataset/lpc-dataset/train', 6759)
-sprites_test = Sprites('./dataset/lpc-dataset/test', 801)
-loader = data.DataLoader(sprites_train, batch_size=256, shuffle=True, num_workers=4)
-loader_test = data.DataLoader(sprites_test, batch_size=256, shuffle=True, num_workers=4)
-train_classifier(model, optim, loader, device, 20, './checkpoint_classifier.pth', loader_test) 
+#device = torch.device('cuda:0')
+#model = SpriteClassifier()
+#model.to(device)
+#optim = torch.optim.Adam(model.parameters(), lr=0.0003)
+#sprites_train = Sprites('./dataset/lpc-dataset/train', 6767)
+#sprites_test = Sprites('./dataset/lpc-dataset/test', 791)
+#loader = data.DataLoader(sprites_train, batch_size=256, shuffle=True, num_workers=4)
+#loader_test = data.DataLoader(sprites_test, batch_size=256, shuffle=True, num_workers=4)
+#train_classifier(model, optim, loader, device, 50, './checkpoint_classifier.pth', loader_test) 
