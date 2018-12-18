@@ -100,8 +100,11 @@ class DisentangledVAE(nn.Module):
 
     def encode_f(self, x):
         lstm_out, _ = self.f_lstm(x)
-        mean = self.f_mean(lstm_out[:, self.frames-1])
-        logvar = self.f_logvar(lstm_out[:, self.frames-1])
+        frontal_part = lstm_out[:,self.frames-1,0:self.hidden_dim]
+        backward_part = lstm_out[:,0,self.hidden_dim:self.hidden_dim*2]
+        lstm_out = torch.cat((frontal_part, backward_part), dim=1)
+        mean = self.f_mean(lstm_out)
+        logvar = self.f_logvar(lstm_out)
         return mean, logvar, self.reparameterize(mean, logvar)
 
     def encode_z(self, x, f):
