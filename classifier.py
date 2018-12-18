@@ -13,26 +13,26 @@ class SpriteClassifier(nn.Module):
         super(SpriteClassifier, self).__init__()
         nl = nn.LeakyReLU(0.2) if nonlinearity is None else nonlinearity
         encoding_conv = []
+        encoding_conv.append(nn.Sequential(nn.Conv3d(3, channels, (3, 5, 5), (1, 4, 4), 1)))
         encoding_conv.append(nn.Sequential(nn.Conv2d(3, channels, 5, 4, 1, bias=False), nl))
         size = in_size // 4
         self.num_frames = num_frames
         while size > 4:
             encoding_conv.append(nn.Sequential(
-                nn.Dropout(p),
-                nn.Conv2d(channels, channels * 2, 5, 4, 1, bias=False),
-                nn.BatchNorm2d(channels * 2), nl))
+                nn.Dropout3d(p),
+                nn.Conv3d(channels, channels, (3,5,5), (1,4,4), 1, bias=False),
+                nn.BatchNorm3d(channels), nl))
             size = size // 4
-            channels *= 2
+            #channels *= 2
         self.encoding_conv = nn.Sequential(*encoding_conv)
         self.final_size = size
         self.final_channels = channels
+        self.frames = num_frames
         self.code_dim = code_dim
         self.hidden_dim = hidden_dim
         self.encoding_fc = nn.Sequential(
-                nn.Linear(size * size * channels, code_dim),
-                nn.BatchNorm1d(code_dim), nl)
-        # The last hidden state of a convolutional LSTM over the scenes is used for classification
-        self.classifier_lstm = nn.LSTM(code_dim, hidden_dim, batch_first=True, bidirectional=False)
+                nn.Linear(size * size * channels * num_frames, hidden_dim),
+                nn.BatchNorm1d(hidden_dim), nl)
         self.body = nn.Sequential(
                 nn.Linear(hidden_dim, hidden_dim // 2),
                 nn.BatchNorm1d(hidden_dim // 2), nl, 
@@ -60,15 +60,11 @@ class SpriteClassifier(nn.Module):
                 nn.Linear(hidden_dim // 2, n_actions))
 
     def forward(self, x):
-        x = x.view(-1, x.size(2), x.size(3), x.size(4))
+        x = x.permute(0,2,1,3,4)
         x = self.encoding_conv(x)
-        x = x.view(-1, self.final_channels * (self.final_size ** 2))
+        x = x.view(-1, self.frames * self.final_channels * (self.final_size ** 2))
         x = self.encoding_fc(x)
-        x = x.view(-1, self.num_frames, self.code_dim)
-        # Classifier output depends on last layer of LSTM: Can also change this to a bi-LSTM if required
-        _, (hidden, _) = self.classifier_lstm(x)
-        hidden = hidden.view(-1, self.hidden_dim)
-        return self.body(hidden), self.shirt(hidden), self.pants(hidden), self.hairstyles(hidden), self.action(hidden)
+        return self.body(x), self.shirt(x), self.pants(x), self.hairstyles(x), self.action(x)
 
 
 def save_model(model, optim, epoch, path):
@@ -131,12 +127,12 @@ def train_classifier(model, optim, dataset, device, epochs, path, test, start=0)
         save_model(model, optim, epoch, path)
         check_accuracy(model, test, device)
 
-#device = torch.device('cuda:0')
-#model = SpriteClassifier()
-#model.to(device)
-#optim = torch.optim.Adam(model.parameters(), lr=0.0003)
-#sprites_train = Sprites('./dataset/lpc-dataset/train', 6767)
-#sprites_test = Sprites('./dataset/lpc-dataset/test', 791)
-#loader = data.DataLoader(sprites_train, batch_size=256, shuffle=True, num_workers=4)
-#loader_test = data.DataLoader(sprites_test, batch_size=256, shuffle=True, num_workers=4)
-#train_classifier(model, optim, loader, device, 50, './checkpoint_classifier.pth', loader_test) 
+device = torch.device('cuda:0')
+model = SpriteClassifier()
+model.to(device)
+optim = torch.optim.Adam(model.parameters(), lr=0.0003)
+sprites_train = Sprites('./dataset/lpc-dataset/train', 6767)
+sprites_test = Sprites('./dataset/lpc-dataset/test', 791)
+loader = data.DataLoader(sprites_train, batch_size=256, shuffle=True, num_workers=4)
+loader_test = data.DataLoader(sprites_test, batch_size=256, shuffle=True, num_workers=4)
+train_classifier(model, optim, loader, device, 50, './checkpoint_classifier.pth', loader_test) 
