@@ -22,8 +22,8 @@ class DisentangledVAE(nn.Module):
 
         self.f_lstm = nn.LSTM(self.conv_dim, self.hidden_dim, 1,
                               bidirectional=True, batch_first=True)
-        self.f_mean = nn.Sequential(nn.Linear(self.hidden_dim * 2, self.f_dim), nl)
-        self.f_logvar = nn.Sequential(nn.Linear(self.hidden_dim * 2, self.f_dim), nl)
+        self.f_mean = nn.Sequential(nn.Linear(self.hidden_dim * 2 * self.frames, self.f_dim), nl)
+        self.f_logvar = nn.Sequential(nn.Linear(self.hidden_dim * 2 * self.frames, self.f_dim), nl)
 
         if self.factorised is True:
             self.z_mean = nn.Sequential(nn.Linear(self.conv_dim, self.z_dim), nl)
@@ -100,9 +100,7 @@ class DisentangledVAE(nn.Module):
 
     def encode_f(self, x):
         lstm_out, _ = self.f_lstm(x)
-        frontal = lstm_out[:, 0, self.hidden_dim:2 * self.hidden_dim]
-        backward = lstm_out[:, self.frames - 1, 0:self.hidden_dim]
-        lstm_out = torch.cat((frontal, backward), dim=1)
+        lstm_out = lstm_out.contiguous().view(-1, lstm_out.size(1) * lstm_out.size(2))
         mean = self.f_mean(lstm_out)
         logvar = self.f_logvar(lstm_out)
         return mean, logvar, self.reparameterize(mean, logvar)
