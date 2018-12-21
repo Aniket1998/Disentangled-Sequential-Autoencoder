@@ -78,9 +78,11 @@ class Trainer(object):
 
     def sample_frames(self,epoch):
         with torch.no_grad():
-            test_z = self.model.sample_z(self.samples, random_sampling=False)
+            _,_,test_z = self.model.sample_z(1, random_sampling=False)
+            print(test_z.shape)
+            print(self.test_f_expand.shape)
             test_zf = torch.cat((test_z, self.test_f_expand), dim=2)
-            recon_x = self.model.decode_frames(self.test_zf) 
+            recon_x = self.model.decode_frames(test_zf) 
             recon_x = recon_x.view(self.samples*8,3,64,64)
             torchvision.utils.save_image(recon_x,'%s/epoch%d.png' % (self.sample_path,epoch))
     
@@ -153,11 +155,12 @@ class Trainer(object):
 
 sprite = Sprites('./dataset/lpc-dataset/train', 6767)
 sprite_test = Sprites('./dataset/lpc-dataset/test', 791)
-loader = torch.utils.data.DataLoader(sprite, batch_size=32, shuffle=True, num_workers=4)
-device = torch.device('cuda:0')
+batch_size = 25
+loader = torch.utils.data.DataLoader(sprite, batch_size=batch_size, shuffle=True, num_workers=4)
+device = torch.device('cuda:1')
 vae = DisentangledVAE(f_dim=256, z_dim=32, step=256, factorised=True,device=device)
-test_f = torch.rand(32, 1, 256)
-test_f = test_f.unsqueeze(1).expand(32, 8, 256)
-trainer = Trainer(vae, sprite, sprite_test, loader ,None, test_f, batch_size=32, epochs=500, learning_rate=0.0002, device=torch.device('cuda:0'))
+test_f = torch.rand(1,256, device=device)
+test_f = test_f.unsqueeze(1).expand(1, 8, 256)
+trainer = Trainer(vae, sprite, sprite_test, loader ,None, test_f, batch_size=30, epochs=500, learning_rate=0.0002, device=device)
 trainer.load_checkpoint()
 trainer.train_model()

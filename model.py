@@ -76,7 +76,7 @@ class DisentangledVAE(nn.Module):
 
         if self.factorised is True:
             # Paper says : 1 Hidden Layer MLP. Last layers shouldn't have any nonlinearities
-            self.z_inter = LinearUnit(self.conv_dim, self.conv_dim // 4)
+            self.z_inter = LinearUnit(self.conv_dim, self.conv_dim // 4, batchnorm=False)
             self.z_mean = nn.Linear(self.conv_dim // 4, self.z_dim)
             self.z_logvar = nn.Linear(self.conv_dim // 4, self.z_dim)
         else:
