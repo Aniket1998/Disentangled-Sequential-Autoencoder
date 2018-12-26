@@ -71,14 +71,14 @@ class DisentangledVAE(nn.Module):
         self.f_lstm = nn.LSTM(self.conv_dim, self.hidden_dim, 1,
                               bidirectional=True, batch_first=True)
         # TODO: Check if only one affine transform is sufficient. Paper says distribution is parameterised by LSTM
-        self.f_mean = LinearUnit(self.hidden_dim * 2, self.f_dim, False)
-        self.f_logvar = LinearUnit(self.hidden_dim * 2, self.f_dim, False)
+        self.f_mean = nn.Linear(self.hidden_dim * 2, self.f_dim, False)
+        self.f_logvar = nn.Linear(self.hidden_dim * 2, self.f_dim, False)
 
         if self.factorised is True:
             # Paper says : 1 Hidden Layer MLP. Last layers shouldn't have any nonlinearities
-            self.z_inter = LinearUnit(self.conv_dim, self.conv_dim // 4, batchnorm=False)
-            self.z_mean = nn.Linear(self.conv_dim // 4, self.z_dim)
-            self.z_logvar = nn.Linear(self.conv_dim // 4, self.z_dim)
+            self.z_inter = LinearUnit(self.conv_dim, self.hidden_dim, batchnorm=False)
+            self.z_mean = nn.Linear(self.hidden_dim, self.z_dim)
+            self.z_logvar = nn.Linear(self.hidden_dim, self.z_dim)
         else:
             # TODO: Check if one affine transform is sufficient. Paper says distribution is parameterised by RNN over LSTM. Last layer shouldn't have any nonlinearities
             self.z_lstm = nn.LSTM(self.conv_dim + self.f_dim, self.hidden_dim, 1, bidirectional=True, batch_first=True)
